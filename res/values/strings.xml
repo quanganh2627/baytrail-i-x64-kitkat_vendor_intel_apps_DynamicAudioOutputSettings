@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="dynoutput_setting">Dynamic Audio Output Settings</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="system_default">System default</string>
+    <string name="speaker">Speaker</string>
+    <string name="hdmi_audio">HDMI Audio</string>
+    <string name="both_channel_output">Both channel output</string>
+
+</resources>

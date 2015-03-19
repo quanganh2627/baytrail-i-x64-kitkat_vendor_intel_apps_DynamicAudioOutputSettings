@@ -37,12 +37,14 @@ import android.widget.Toast;
 import android.os.SystemProperties;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 
 	private static final String TAG = "dynamicaudiooutput";
 	private static final String CMD_AUDIO_1 = "sys.dynoutput.mode";
 	private static final String CMD_AUDIO_2 = "sys.dynoutput.forceuse";
+	private static final String DEFAULT_VAL = "0";
 	private static final String SPEAKER_VAL = "1";
 	private static final String HDMI_VAL = "2";
 	private static final String BOTH_ON = "1";
@@ -59,14 +61,16 @@ public class MainActivity extends Activity {
 		int retCmd = 0;
 		try {
 			retCmd = SystemProperties.getInt(CMD_AUDIO_2, 0);
+			Log.d(TAG, "getprop: "+ CMD_AUDIO_2 + " = " + retCmd);
 		} catch (Exception e) {
+			Log.e(TAG, "Exception on getprop: "+ CMD_AUDIO_2);
 			retCmd = 0;
 		}
 
 		switch(retCmd) {
 			case 1:
-			radioGroup.check(R.id.speaker);
-			break;
+				radioGroup.check(R.id.speaker);
+				break;
 			case 2:
 				radioGroup.check(R.id.hdmiaudio);
 				break;
@@ -78,7 +82,9 @@ public class MainActivity extends Activity {
 
 		try {
 			retCmd = SystemProperties.getInt(CMD_AUDIO_1, 0);
+			Log.d(TAG, "getprop: "+ CMD_AUDIO_1 + " = " + retCmd);
 		} catch (Exception e) {
+			Log.e(TAG, "Exception on getprop: "+ CMD_AUDIO_1);
 			retCmd = 0;
 		}
 
@@ -86,7 +92,7 @@ public class MainActivity extends Activity {
 			case 0:
 			default:
 				checkBox.setChecked(false);
-			break;
+				break;
 			case 1:
 				checkBox.setChecked(true);
 				break;
@@ -98,25 +104,27 @@ public class MainActivity extends Activity {
 			int selectedRadioId = radioGroup.getCheckedRadioButtonId();
 			switch(selectedRadioId) {
 			    case R.id.speaker:
-				Toast.makeText(getApplicationContext(), "Speaker", Toast.LENGTH_SHORT).show();
-				try {
-				    SystemProperties.set(CMD_AUDIO_2, SPEAKER_VAL);
-				    Toast.makeText(getApplicationContext(),"setprop: "+ CMD_AUDIO_2 +" "+SPEAKER_VAL,Toast.LENGTH_LONG).show();
-				} catch (Exception e) {
-				    Toast.makeText(getApplicationContext(), "Exception", Toast.LENGTH_SHORT).show();
-				}
-				break;
+					try {
+						SystemProperties.set(CMD_AUDIO_2, SPEAKER_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_2 +" "+SPEAKER_VAL);
+					}
+					break;
 			    case R.id.hdmiaudio:
-				Toast.makeText(getApplicationContext(), "HDMI Audio", Toast.LENGTH_SHORT).show();
-				try {
-				    SystemProperties.set(CMD_AUDIO_2, HDMI_VAL);
-				    Toast.makeText(getApplicationContext(),"setprop: "+ CMD_AUDIO_2 +" "+HDMI_VAL,Toast.LENGTH_LONG).show();
-				} catch (Exception e) {
-				    Toast.makeText(getApplicationContext(), "Exception", Toast.LENGTH_SHORT).show();
-				}
-				break;
+					try {
+						SystemProperties.set(CMD_AUDIO_2, HDMI_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_2 +" "+HDMI_VAL);
+					}
+					break;
 			    default:
-				break;
+			    case R.id.sysdefault:
+					try {
+						SystemProperties.set(CMD_AUDIO_2, DEFAULT_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_2 +" "+DEFAULT_VAL);
+					}
+					break;
 			}
 		}
 		});
@@ -127,10 +135,8 @@ public class MainActivity extends Activity {
 			if (checkBox.isChecked()) {
 				checkBox.setChecked(true);
 				SystemProperties.set(CMD_AUDIO_1, BOTH_ON);
-				Toast.makeText(getApplicationContext(), "Enable both channel Output", Toast.LENGTH_SHORT).show();
 			} else {
 				SystemProperties.set(CMD_AUDIO_1, BOTH_OFF);
-				Toast.makeText(getApplicationContext(), "Disable both channel Output", Toast.LENGTH_SHORT).show();
 			}
 		}
 		});

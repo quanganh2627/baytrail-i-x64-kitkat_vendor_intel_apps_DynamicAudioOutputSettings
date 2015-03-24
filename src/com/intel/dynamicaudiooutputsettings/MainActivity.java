@@ -42,8 +42,8 @@ import android.util.Log;
 public class MainActivity extends Activity {
 
 	private static final String TAG = "dynamicaudiooutput";
-	private static final String CMD_AUDIO_1 = "sys.dynoutput.mode";
-	private static final String CMD_AUDIO_2 = "sys.dynoutput.forceuse";
+	private static final String CMD_AUDIO_1 = "persist.sys.daudioout.mode";
+	private static final String CMD_AUDIO_2 = "persist.sys.daudioout.forceuse";
 	private static final String DEFAULT_VAL = "0";
 	private static final String SPEAKER_VAL = "1";
 	private static final String HDMI_VAL = "2";

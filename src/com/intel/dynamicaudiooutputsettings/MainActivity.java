@@ -29,12 +29,16 @@
 package com.intel.dynamicaudiooutputsettings;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.os.SystemProperties;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.util.Log;
@@ -44,6 +48,8 @@ public class MainActivity extends Activity {
 	private static final String TAG = "dynamicaudiooutput";
 	private static final String CMD_AUDIO_1 = "persist.sys.daudioout.mode";
 	private static final String CMD_AUDIO_2 = "persist.sys.daudioout.forceuse";
+	private static final String CMD_AUDIO_3 = "persist.sys.daudioout.alt";
+	private static final String CMD_AUDIO_4 = "persist.sys.daudioout.altapp";
 	private static final String DEFAULT_VAL = "0";
 	private static final String SPEAKER_VAL = "1";
 	private static final String HDMI_VAL = "2";
@@ -57,6 +63,9 @@ public class MainActivity extends Activity {
 
 		final RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroupOutput);
 		final CheckBox checkBox = (CheckBox) findViewById(R.id.Bothout);
+		final EditText editText = (EditText) findViewById(R.id.secappname);
+		final Button buttonSave = (Button)findViewById(R.id.secappnamesave);
+		final RadioGroup radioGroupSec = (RadioGroup)findViewById(R.id.radioGroupOutputSecondary);
 
 		int retCmd = 0;
 		try {
@@ -98,6 +107,30 @@ public class MainActivity extends Activity {
 				break;
 		}
 
+		String mAppName = SystemProperties.get(CMD_AUDIO_4);
+                editText.setText(mAppName);
+
+		try {
+			retCmd = SystemProperties.getInt(CMD_AUDIO_3, 0);
+			Log.d(TAG, "getprop: "+ CMD_AUDIO_3 + " = " + retCmd);
+		} catch (Exception e) {
+			Log.e(TAG, "Exception on getprop: "+ CMD_AUDIO_3);
+			retCmd = 0;
+		}
+
+		switch(retCmd) {
+			case 1:
+				radioGroupSec.check(R.id.secspeaker);
+				break;
+			case 2:
+				radioGroupSec.check(R.id.sechdmiaudio);
+				break;
+			default:
+				radioGroupSec.check(R.id.secsysdefault);
+				break;
+		}
+		retCmd = 0;
+	
 		radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 		@Override
 		public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -137,6 +170,44 @@ public class MainActivity extends Activity {
 				SystemProperties.set(CMD_AUDIO_1, BOTH_ON);
 			} else {
 				SystemProperties.set(CMD_AUDIO_1, BOTH_OFF);
+			}
+		}
+		});
+
+		buttonSave.setOnClickListener(new Button.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				SystemProperties.set(CMD_AUDIO_4, editText.getText().toString());
+			}
+		});
+		
+		radioGroupSec.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(RadioGroup radioGroupSec, int i) {
+			int selectedRadioId = radioGroupSec.getCheckedRadioButtonId();
+			switch(selectedRadioId) {
+			    case R.id.secspeaker:
+					try {
+						SystemProperties.set(CMD_AUDIO_3, SPEAKER_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_3 +" "+SPEAKER_VAL);
+					}
+					break;
+			    case R.id.sechdmiaudio:
+					try {
+						SystemProperties.set(CMD_AUDIO_3, HDMI_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_3 +" "+HDMI_VAL);
+					}
+					break;
+			    default:
+			    case R.id.secsysdefault:
+					try {
+						SystemProperties.set(CMD_AUDIO_3, DEFAULT_VAL);
+					} catch (Exception e) {
+						Log.e(TAG, "Exception on setprop: "+ CMD_AUDIO_3 +" "+DEFAULT_VAL);
+					}
+					break;
 			}
 		}
 		});

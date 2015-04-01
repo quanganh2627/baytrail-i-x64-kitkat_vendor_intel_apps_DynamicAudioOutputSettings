@@ -8,5 +8,10 @@
     <string name="speaker">Speaker</string>
     <string name="hdmi_audio">HDMI Audio</string>
     <string name="both_channel_output">Both channel output</string>
+    <string name="sec_output_app">Secondary Output App</string>
+    <string name="sec_system_default">Secondary System Default</string>
+    <string name="sec_speaker">Secondary Speaker</string>
+    <string name="sec_hdmi_audio">Secondary HDMI Audio</string>
+    <string name="sec_app_name_save">Save</string>
 
 </resources>

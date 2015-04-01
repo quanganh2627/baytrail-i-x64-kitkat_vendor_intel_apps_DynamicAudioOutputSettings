@@ -7,43 +7,100 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.intel.dynamicaudiooutputsettings.MainActivity" >
-    
-        <LinearLayout
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <RadioGroup
-		android:id="@+id/radioGroupOutput"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_weight="1" >
+            android:id="@+id/radioGroupOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
 
-		<RadioButton
-		android:id="@+id/sysdefault"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:checked="true"
-		android:text="@string/system_default" />
+            <RadioButton
+                android:id="@+id/sysdefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/system_default" />
 
-		<RadioButton
-		android:id="@+id/speaker"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/speaker" />
+            <RadioButton
+                android:id="@+id/speaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speaker" />
 
-		<RadioButton
-		android:id="@+id/hdmiaudio"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/hdmi_audio" />
-
-		<CheckBox
-		android:id="@+id/Bothout"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/both_channel_output" />
-
+            <RadioButton
+                android:id="@+id/hdmiaudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hdmi_audio" />
         </RadioGroup>
     </LinearLayout>
-</RelativeLayout>
 
+    <CheckBox
+        android:id="@+id/Bothout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        android:text="@string/both_channel_output" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Bothout"
+        android:layout_below="@+id/Bothout"
+        android:text="@string/sec_output_app"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/secappname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_toRightOf="@+id/textView1"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <RadioGroup
+        android:id="@+id/radioGroupOutputSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/secappname" >
+
+        <RadioButton
+            android:id="@+id/secsysdefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/sec_system_default" />
+
+        <RadioButton
+            android:id="@+id/secspeaker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sec_speaker" />
+
+        <RadioButton
+            android:id="@+id/sechdmiaudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sec_hdmi_audio" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/secappnamesave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/secappname"
+        android:layout_toRightOf="@+id/secappname"
+        android:text="@string/sec_app_name_save" />
+
+</RelativeLayout>
